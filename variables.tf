@@ -31,6 +31,8 @@ variable "managed_identity_object_id" {
   default = ""
 }
 
+variable "external_cert_name" {}
+
 variable "external_hostname" {
   type        = "string"
   default     = "platform.hmcts.net"

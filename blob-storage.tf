@@ -8,7 +8,7 @@ locals {
   stripped_product  = "${replace(var.product, "-", "")}"
   account_name      = "${local.stripped_product}${var.env}"
   mgmt_network_name = "${var.subscription == "prod" || var.subscription == "nonprod" ? "mgmt-infra-prod" : "mgmt-infra-sandbox"}"
-  external_hostname = "${local.stripped_product}${var.env == "prod" ? "" : join("", [".", var.env])}.${var.external_hostname}"
+  external_hostname = "${local.stripped_product}${var.env == "prod" ? "" : join("", [".", "${var.env}"])}.${var.external_hostname}"
 
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by process
