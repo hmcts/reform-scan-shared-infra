@@ -64,7 +64,7 @@ module "appGw" {
       probeEnabled                   = "True"
       probe                          = "http-probe"
       PickHostNameFromBackendAddress = "False"
-      HostName                       = "${var.external_hostname}"
+      HostName                       = "${local.external_hostname}"
     },
   ]
 
