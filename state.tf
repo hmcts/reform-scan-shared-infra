@@ -9,7 +9,7 @@ data "azurerm_subnet" "subnet_a" {
 }
 
 data "azurerm_subnet" "subnet_b" {
-  name                 = "reform-scan"
+  name                 = "bulk-scan"
   virtual_network_name = "core-infra-vnet-${var.env}"
   resource_group_name  = "core-infra-${var.env}"
 }
