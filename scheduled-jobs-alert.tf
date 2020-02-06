@@ -51,9 +51,10 @@ module "handle-rejected-files-alert" {
 
   app_insights_query = "traces | where message startswith 'Started handle-rejected-files job'"
 
-  # 60 * 36 hours = 2160 min - because handle-rejected-files jobs runs once per day
-  frequency_in_minutes       = 2160
-  time_window_in_minutes     = 2160
+  # running every hour and checking for 25 hours time window ensures early alert
+  frequency_in_minutes       = 60
+  # 60 * 25 hours = 1500 min
+  time_window_in_minutes     = 1500
 
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
