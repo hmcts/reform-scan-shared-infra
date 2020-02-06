@@ -13,7 +13,7 @@ module "blob-dispatcher-alert" {
   time_window_in_minutes     = 30
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
-  custom_email_subject       = "Reform Scan blob-dispatcher"
+  custom_email_subject       = "Reform Scan blob-dispatcher scheduled job alert"
   trigger_threshold_operator = "Equal"
   trigger_threshold          = 0
   resourcegroup_name         = "${azurerm_resource_group.rg.name}"
@@ -34,7 +34,7 @@ module "delete-dispatched-files-alert" {
   time_window_in_minutes     = 120
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
-  custom_email_subject       = "Reform Scan delete-dispatched-files"
+  custom_email_subject       = "Reform Scan delete-dispatched-files scheduled job alert"
   trigger_threshold_operator = "Equal"
   trigger_threshold          = 0
   resourcegroup_name         = "${azurerm_resource_group.rg.name}"
@@ -51,11 +51,13 @@ module "handle-rejected-files-alert" {
 
   app_insights_query = "traces | where message startswith 'Started handle-rejected-files job'"
 
+  # 60 * 36 hours = 2160 min - because handle-rejected-files jobs runs once per day
   frequency_in_minutes       = 2160
   time_window_in_minutes     = 2160
+
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
-  custom_email_subject       = "Reform Scan handle-rejected-files"
+  custom_email_subject       = "Reform Scan handle-rejected-files scheduled job alert"
   trigger_threshold_operator = "Equal"
   trigger_threshold          = 0
   resourcegroup_name         = "${azurerm_resource_group.rg.name}"
