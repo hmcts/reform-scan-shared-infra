@@ -10,7 +10,7 @@ locals {
   mgmt_network_name = "${var.subscription == "preview" ? "mgmt-infra-sandbox" : "mgmt-infra-prod"}"
   prod_hostname     = "${local.stripped_product}.${var.external_hostname}"
   nonprod_hostname  = "${local.stripped_product}.${var.env}.${var.external_hostname}"
-  external_hostname = "${ var.env == "prod" ? local.prod_hostname : local.nonprod_hostname}"
+  external_hostname = "${var.env == "prod" ? local.prod_hostname : local.nonprod_hostname}"
 
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by process
