@@ -83,3 +83,9 @@ resource "azurerm_key_vault_secret" "storage_account_secondary_key" {
   name         = "storage-account-secondary-key"
   value        = "${azurerm_storage_account.storage_account.secondary_access_key}"
 }
+
+resource "azurerm_key_vault_secret" "storage_account_connection_string" {
+  key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
+  name         = "storage-reform-connection-string"
+  value        = "${azurerm_storage_account.storage_account.primary_connection_string}"
+}
