@@ -122,15 +122,18 @@ module "check-new-envelopes-alert" {
   alert_desc = "Triggers when no logs from check-new-envelopes job found within timeframe."
 
   app_insights_query =  <<EOF
-traces
+traces // The scheduled job which runs on business hours only
 | where message startswith "Started check-new-envelopes job"
 | union (datatable(metric: real) [
-  0,
+  0, // to mimic the non business hours
 ]
 | extend timeNow = now()
 | extend day_of_week = toint(substring(tostring(dayofweek(timeNow)), 0, 1))
 | extend hour_of_the_day = datetime_part("hour", timeNow)
-| where day_of_week == 0 or day_of_week == 6 or hour_of_the_day < 9 or hour_of_the_day  > 17)
+| where day_of_week == 0 or
+        day_of_week == 6 or
+        hour_of_the_day < 9 or
+        hour_of_the_day  > 17)
 EOF
 
   frequency_in_minutes       = 60
