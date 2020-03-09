@@ -130,10 +130,10 @@ traces // The scheduled job which runs on business hours only
 | extend timeNow = now()
 | extend day_of_week = toint(substring(tostring(dayofweek(timeNow)), 0, 1))
 | extend hour_of_the_day = datetime_part("hour", timeNow)
-| where day_of_week == 0 or
-        day_of_week == 6 or
-        hour_of_the_day < 9 or
-        hour_of_the_day  > 17)
+| where day_of_week == 0 or // sunday
+        day_of_week == 6 or // saturday
+        hour_of_the_day < 9 or // scheduled job start hour
+        hour_of_the_day  > 17) // scheduled job end hour
 EOF
 
   frequency_in_minutes       = 60
