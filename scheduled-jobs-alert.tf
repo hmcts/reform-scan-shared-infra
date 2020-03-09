@@ -111,3 +111,35 @@ module "delete-rejected-files-alert" {
   trigger_threshold          = 0
   resourcegroup_name         = "${azurerm_resource_group.rg.name}"
 }
+
+module "check-new-envelopes-alert" {
+  source            = "git@github.com:hmcts/cnp-module-metric-alert"
+  location          = "${azurerm_application_insights.appinsights.location}"
+  app_insights_name = "${azurerm_application_insights.appinsights.name}"
+
+  enabled    = "${var.env == "prod"}"
+  alert_name = "Check-New-Envelopes"
+  alert_desc = "Triggers when no logs from check-new-envelopes job found within timeframe."
+
+  app_insights_query =  <<EOF
+traces
+| where message startswith "Started check-new-envelopes job"
+| union (datatable(metric: real) [
+  0,
+]
+| extend timeNow = now()
+| extend day_of_week = toint(substring(tostring(dayofweek(timeNow)), 0, 1))
+| extend hour_of_the_day = datetime_part("hour", timeNow)
+| where day_of_week == 0 or day_of_week == 6 or hour_of_the_day < 9 or hour_of_the_day  > 17)
+EOF
+
+  frequency_in_minutes       = 60
+  time_window_in_minutes     = 60
+
+  severity_level             = "1"
+  action_group_name          = "${module.alert-action-group.action_group_name}"
+  custom_email_subject       = "Reform Scan check-new-envelopes scheduled job alert"
+  trigger_threshold_operator = "Equal"
+  trigger_threshold          = 0
+  resourcegroup_name         = "${azurerm_resource_group.rg.name}"
+}
