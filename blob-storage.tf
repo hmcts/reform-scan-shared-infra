@@ -25,7 +25,7 @@ data "azurerm_subnet" "trusted_subnet" {
 
 data "azurerm_subnet" "jenkins_subnet" {
   provider             = "azurerm.mgmt"
-  name                 = "jenkins-subnet"
+  name                 = "iaas"
   virtual_network_name = "${local.mgmt_network_name}"
   resource_group_name  = "${local.mgmt_network_name}"
 }
