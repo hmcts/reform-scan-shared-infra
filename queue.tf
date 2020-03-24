@@ -44,12 +44,12 @@ resource "azurerm_key_vault_secret" "notifications_staging_queue_send_conn_str" 
   key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
   name         = "notifications-staging-queue-send-connection-string"
   value        = "${module.notifications-staging-queue.primary_send_connection_string}"
-  count        =  "${var.enable_staging_queue == "true" ? 1 : 0 }"
+  count        = "${var.enable_staging_queue == "true" ? 1 : 0 }"
 }
 
 resource "azurerm_key_vault_secret" "notifications_staging_queue_listen_conn_str" {
   key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
   name         = "notifications-staging-queue-listen-connection-string"
   value        = "${module.notifications-staging-queue.primary_listen_connection_string}"
-  count        =  "${var.enable_staging_queue == "true" ? 1 : 0 }"
+  count        = "${var.enable_staging_queue == "true" ? 1 : 0 }"
 }
