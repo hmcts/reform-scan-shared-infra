@@ -39,7 +39,7 @@ variable "external_hostname" {
   description = "Ending of hostname. Subdomains will be resolved in declaration of locals"
 }
 
-variable "enable_staging_queue" {
+variable "create_queue" {
   type        = "string"
   default     = "false"
   description = "Enable creation of queue for testing"

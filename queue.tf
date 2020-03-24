@@ -37,17 +37,17 @@ module "notifications-staging-queue" {
   lock_duration       = "PT5M"
 
   duplicate_detection_history_time_window = "PT15M"
-  queue_enabled       = "${var.enable_staging_queue}"
+  queue_enabled       = "${var.create_queue}"
 }
 
 resource "azurerm_key_vault_secret" "notifications_staging_queue_send_conn_str" {
   key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
   name         = "notifications-staging-queue-send-connection-string"
-  value        = "${var.enable_staging_queue == "true" ? module.notifications-staging-queue.primary_send_connection_string : "" }"
+  value        = "${var.create_queue == "true" ? module.notifications-staging-queue.primary_send_connection_string : "" }"
 }
 
 resource "azurerm_key_vault_secret" "notifications_staging_queue_listen_conn_str" {
   key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
   name         = "notifications-staging-queue-listen-connection-string"
-  value        = "${var.enable_staging_queue == "true" ? module.notifications-staging-queue.primary_listen_connection_string : "" }"
+  value        = "${var.create_queue == "true" ? module.notifications-staging-queue.primary_listen_connection_string : "" }"
 }
