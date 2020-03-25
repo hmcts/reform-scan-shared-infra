@@ -43,11 +43,11 @@ module "notifications-staging-queue" {
 resource "azurerm_key_vault_secret" "notifications_staging_queue_send_conn_str" {
   key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
   name         = "notifications-staging-queue-send-connection-string"
-  value        = "${var.create_staging_queue == "true" ? module.notifications-staging-queue.primary_send_connection_string : "" }"
+  value        = "${var.create_staging_queue == "true" ? module.notifications-staging-queue.primary_send_connection_string : "dummy_value" }"
 }
 
 resource "azurerm_key_vault_secret" "notifications_staging_queue_listen_conn_str" {
   key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
   name         = "notifications-staging-queue-listen-connection-string"
-  value        = "${var.create_staging_queue == "true" ? module.notifications-staging-queue.primary_listen_connection_string : "" }"
+  value        = "${var.create_staging_queue == "true" ? module.notifications-staging-queue.primary_listen_connection_string : "dummy_value" }"
 }
