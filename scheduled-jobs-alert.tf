@@ -140,13 +140,13 @@ module "send-notifications-alert" {
   app_insights_name = "${azurerm_application_insights.appinsights.name}"
 
   enabled    = "${var.env == "prod"}"
-  alert_name = "Send-Notifications"
+  alert_name = "Reform-Scan-Send-Notifications"
   alert_desc = "Triggers when no logs from send-notifications job found within timeframe."
 
   app_insights_query = "traces | where message startswith 'Started send-notifications job'"
 
-  frequency_in_minutes       = 120
-  time_window_in_minutes     = 120
+  frequency_in_minutes       = 20
+  time_window_in_minutes     = 30
   severity_level             = "1"
   action_group_name          = "${module.alert-action-group.action_group_name}"
   custom_email_subject       = "Reform Scan send-notifications scheduled job alert"
