@@ -1,32 +1,32 @@
 locals {
-  stripped_product  = "${replace(var.product, "-", "")}"
-  account_name      = "${local.stripped_product}${var.env}staging"
-  mgmt_network_name = "core-cftptl-intsvc-vnet"
-  mgmt_network_rg_name = "aks-infra-cftptl-intsvc-rg"
-  prod_hostname     = "${local.stripped_product}.staging.${var.external_hostname}"
-  nonprod_hostname  = "${local.stripped_product}.${var.env}.staging.${var.external_hostname}"
-  external_hostname_stg = "${ var.env == "prod" ? local.prod_hostname : local.nonprod_hostname}"
+  stripped_product_stg  = "${replace(var.product, "-", "")}"
+  account_name_stg      = "${local.stripped_product_stg}${var.env}staging"
+  mgmt_network_name_stg = "core-cftptl-intsvc-vnet"
+  mgmt_network_rg_name_stg = "aks-infra-cftptl-intsvc-rg"
+  prod_hostname_stg     = "${local.stripped_product_stg}.staging.${var.external_hostname}"
+  nonprod_hostname_stg  = "${local.stripped_product_stg}.${var.env}.staging.${var.external_hostname}"
+  external_hostname_stg = "${ var.env == "prod" ? local.prod_hostname_stg : local.nonprod_hostname_stg}"
 
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by process
   client_containers = ["bulkscan", "cmc", "crime", "divorce", "finrem", "probate", "sscs", "publiclaw"]
 }
 
-data "azurerm_subnet" "trusted_subnet" {
-  name                 = "${local.trusted_vnet_subnet_name}"
-  virtual_network_name = "${local.trusted_vnet_name}"
-  resource_group_name  = "${local.trusted_vnet_resource_group}"
+data "azurerm_subnet" "trusted_subnet_stg" {
+  name                 = "${local.trusted_vnet_subnet_name_stg}"
+  virtual_network_name = "${local.trusted_vnet_name_stg}"
+  resource_group_name  = "${local.trusted_vnet_resource_group_stg}"
 }
 
-data "azurerm_subnet" "jenkins_subnet" {
+data "azurerm_subnet" "jenkins_subnet_stg" {
   provider             = "azurerm.mgmt"
   name                 = "iaas"
-  virtual_network_name = "${local.mgmt_network_name}"
-  resource_group_name  = "${local.mgmt_network_rg_name}"
+  virtual_network_name = "${local.mgmt_network_name_stg}"
+  resource_group_name  = "${local.mgmt_network_rg_name_stg}"
 }
 
 resource "azurerm_storage_account" "storage_account_staging" {
-  name                = "${local.account_name}"
+  name                = "${local.account_name_stg}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
   location                 = "${azurerm_resource_group.rg.location}"
@@ -40,7 +40,7 @@ resource "azurerm_storage_account" "storage_account_staging" {
   }
 
   network_rules {
-    virtual_network_subnet_ids = ["${data.azurerm_subnet.trusted_subnet.id}", "${data.azurerm_subnet.jenkins_subnet.id}"]
+    virtual_network_subnet_ids = ["${data.azurerm_subnet.jenkins_subnet_stg.id}", "${data.azurerm_subnet.jenkins_subnet_stg.id}"]
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
   }
@@ -48,13 +48,13 @@ resource "azurerm_storage_account" "storage_account_staging" {
   tags = "${local.tags}"
 }
 
-resource "azurerm_storage_container" "client_containers" {
+resource "azurerm_storage_container" "client_containers_stg" {
   name                 = "${local.client_containers[count.index]}"
   storage_account_name = "${azurerm_storage_account.storage_account_staging.name}"
   count                = "${length(local.client_containers)}"
 }
 
-resource "azurerm_storage_container" "client_rejected_containers" {
+resource "azurerm_storage_container" "client_rejected_containers_stg" {
   name                 = "${local.client_containers[count.index]}-rejected"
   storage_account_name = "${azurerm_storage_account.storage_account_staging.name}"
   count                = "${length(local.client_containers)}"

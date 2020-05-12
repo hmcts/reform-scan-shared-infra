@@ -1,12 +1,3 @@
-data "azurerm_key_vault" "infra_vault" {
-  name                = "infra-vault-${var.subscription}"
-  resource_group_name = "${var.env == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
-}
-
-data "azurerm_key_vault_secret" "cert" {
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-  name         = "${var.external_cert_name}"
-}
 
 module "appGwStaging" {
   source            = "git@github.com:hmcts/cnp-module-waf?ref=master"
