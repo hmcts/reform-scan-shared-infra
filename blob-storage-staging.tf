@@ -9,7 +9,7 @@ locals {
 
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by process
-  client_containers = ["bulkscan", "cmc", "crime", "divorce", "finrem", "probate", "sscs", "publiclaw"]
+  client_containers_stg = ["bulkscan", "cmc", "crime", "divorce", "finrem", "probate", "sscs", "publiclaw"]
 }
 
 data "azurerm_subnet" "trusted_subnet_stg" {
@@ -51,13 +51,13 @@ resource "azurerm_storage_account" "storage_account_staging" {
 resource "azurerm_storage_container" "client_containers_stg" {
   name                 = "${local.client_containers[count.index]}"
   storage_account_name = "${azurerm_storage_account.storage_account_staging.name}"
-  count                = "${length(local.client_containers)}"
+  count                = "${length(local.client_containers_stg)}"
 }
 
 resource "azurerm_storage_container" "client_rejected_containers_stg" {
   name                 = "${local.client_containers[count.index]}-rejected"
   storage_account_name = "${azurerm_storage_account.storage_account_staging.name}"
-  count                = "${length(local.client_containers)}"
+  count                = "${length(local.client_containers_stg)}"
 }
 
 # store blob storage secrets in key vault
