@@ -34,7 +34,7 @@ module "appGw" {
     {
       name     = "${var.external_cert_name}"
       data     = "${data.azurerm_key_vault_secret.cert.value}"
-      password = ""
+      password = "${var.env == "prod" ? "" : "${data.azurerm_key_vault_secret.cert_password.value}"}"
     },
   ]
 
