@@ -65,7 +65,7 @@ module "appGwStaging" {
       name                = "https"
       RuleType            = "Basic"
       httpListener        = "https-listener"
-      backendAddressPool  = "${var.product}-${var.env}"
+      backendAddressPool  = "${var.product}-${var.env}-staging"
       backendHttpSettings = "backend"
     },
   ]
