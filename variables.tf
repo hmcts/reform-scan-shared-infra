@@ -38,3 +38,7 @@ variable "external_hostname" {
   default     = "platform.hmcts.net"
   description = "Ending of hostname. Subdomains will be resolved in declaration of locals"
 }
+variable "wafFileUploadLimit" {
+  description = "Maximum file upload size in MB for WAF"
+  default = "100"
+}
