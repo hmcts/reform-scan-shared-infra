@@ -7,5 +7,6 @@ def product = 'reform-scan'
 withInfraPipeline(product) {
 
   enableSlackNotifications('#bsp-build-notices')
+  
 
 }
