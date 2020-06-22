@@ -20,6 +20,7 @@ provider "azurerm" {
 
 locals {
   aks_env_subscription = "${var.subscription == "aat" ? "stg" : var.subscription}"
+  provider             = "azurerm.cftapps-${local.aks_env_subscription}"
 }
 
 data "azurerm_key_vault_secret" "allowed_external_ips" {
@@ -34,13 +35,13 @@ data "azurerm_public_ip" "proxy_out_public_ip" {
 }
 
 data "azurerm_public_ip_prefix" "aks00_public_ip_prefix" {
-  provider            = "azurerm.cftapps-${local.aks_env_subscription}"
+  provider            = "${local.provider}"
   name                = "${var.env}-00-aks-pip"
   resource_group_name = "aks-infra-${var.env}-rg"
 }
 
 data "azurerm_public_ip_prefix" "aks01_public_ip_prefix" {
-  provider            = "azurerm.cftapps-stg"
+  provider            = "${local.provider}"
   name                = "${var.env}-01-aks-pip"
   resource_group_name = "aks-infra-${var.env}-rg"
 }
