@@ -1,3 +1,7 @@
+provider "azurerm" {
+  alias           = "cft-mgmt"
+  subscription_id = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
+}
 
 data "azurerm_key_vault" "reform_scan_key_vault" {
   name                = "reform-scan-${var.env}"
@@ -16,12 +20,12 @@ data "azurerm_public_ip" "proxy_out_public_ip" {
 }
 
 data "azurerm_public_ip_prefix" "aks00_public_ip_prefix" {
-  name         = "${var.env}-00-aks-pip"
+  name         = "nsg-aks00-pip"
   key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
 
 data "azurerm_public_ip_prefix" "aks01_public_ip_prefix" {
-  name         = "${var.env}-01-aks-pip"
+  name         = "nsg-aks01-pip"
   key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
 
