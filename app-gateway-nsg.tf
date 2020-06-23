@@ -1,31 +1,12 @@
-provider "azurerm" {
-  alias           = "cft-mgmt"
-  subscription_id = "ed302caf-ec27-4c64-a05e-85731c3ce90e"
-}
 
-provider "azurerm" {
-  alias           = "cftapps-prod"
-  subscription_id = "8cbc6f36-7c56-4963-9d36-739db5d00b27"
-}
-
-provider "azurerm" {
-  alias           = "cftapps-stg"
-  subscription_id = "96c274ce-846d-4e48-89a7-d528432298a7"
-}
-
-provider "azurerm" {
-  alias           = "cftapps-sbox"
-  subscription_id = "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
-}
-
-data "azurerm_key_vault_secret" "aks_subscription" {
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-  name         = "aks-subscription"
+data "azurerm_key_vault" "reform_scan_key_vault" {
+  name                = "reform-scan-${var.env}"
+  resource_group_name = "reform-scan-${var.env}"
 }
 
 data "azurerm_key_vault_secret" "allowed_external_ips" {
   name         = "nsg-allowed-external-ips"
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
+  key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
 
 data "azurerm_public_ip" "proxy_out_public_ip" {
@@ -35,15 +16,13 @@ data "azurerm_public_ip" "proxy_out_public_ip" {
 }
 
 data "azurerm_public_ip_prefix" "aks00_public_ip_prefix" {
-  provider            = "${data.azurerm_key_vault_secret.aks_subscription.value}"
-  name                = "${var.env}-00-aks-pip"
-  resource_group_name = "aks-infra-${var.env}-rg"
+  name         = "${var.env}-00-aks-pip"
+  key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
 
 data "azurerm_public_ip_prefix" "aks01_public_ip_prefix" {
-  provider            = "${data.azurerm_key_vault_secret.aks_subscription.value}"
-  name                = "${var.env}-01-aks-pip"
-  resource_group_name = "aks-infra-${var.env}-rg"
+  name         = "${var.env}-01-aks-pip"
+  key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
 
 resource "azurerm_network_security_group" "reformscannsg" {
