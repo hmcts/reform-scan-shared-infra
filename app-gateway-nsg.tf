@@ -19,12 +19,12 @@ data "azurerm_public_ip" "proxy_out_public_ip" {
   resource_group_name = "reformMgmtDmzRG"
 }
 
-data "azurerm_public_ip_prefix" "aks00_public_ip_prefix" {
+data "azurerm_key_vault_secret" "aks00_public_ip_prefix" {
   name         = "nsg-aks00-pip"
   key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
 
-data "azurerm_public_ip_prefix" "aks01_public_ip_prefix" {
+data "azurerm_key_vault_secret" "aks01_public_ip_prefix" {
   name         = "nsg-aks01-pip"
   key_vault_id = "${data.azurerm_key_vault.reform_scan_key_vault.id}"
 }
@@ -51,7 +51,7 @@ resource "azurerm_network_security_group" "reformscannsg" {
     direction                  = "Inbound"
     access                     = "Allow"
     priority                   = 110
-    source_address_prefix      = "[${data.azurerm_public_ip.proxy_out_public_ip.ip_address},${data.azurerm_public_ip_prefix.aks00_public_ip_prefix.ip_prefix},${data.azurerm_public_ip_prefix.aks01_public_ip_prefix.ip_prefix}]"
+    source_address_prefix      = "[${data.azurerm_public_ip.proxy_out_public_ip.ip_address},${data.azurerm_key_vault_secret.aks00_public_ip_prefix.value},${data.azurerm_key_vault_secret.aks01_public_ip_prefix.value}]"
     source_port_range          = "*"
     destination_address_prefix = "*"
     destination_port_range     = "443"
