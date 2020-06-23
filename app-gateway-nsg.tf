@@ -18,9 +18,9 @@ provider "azurerm" {
   subscription_id = "b72ab7b7-723f-4b18-b6f6-03b0f2c6a1bb"
 }
 
-locals {
-  aks_env_subscription = "${var.subscription == "aat" ? "stg" : var.subscription}"
-  provider             = "azurerm.cftapps-${local.aks_env_subscription}"
+data "azurerm_key_vault_secret" "aks_subscription" {
+  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
+  name         = "aks-subscription"
 }
 
 data "azurerm_key_vault_secret" "allowed_external_ips" {
@@ -35,13 +35,13 @@ data "azurerm_public_ip" "proxy_out_public_ip" {
 }
 
 data "azurerm_public_ip_prefix" "aks00_public_ip_prefix" {
-  provider            = "${local.provider}"
+  provider            = "${data.azurerm_key_vault_secret.aks_subscription.value}"
   name                = "${var.env}-00-aks-pip"
   resource_group_name = "aks-infra-${var.env}-rg"
 }
 
 data "azurerm_public_ip_prefix" "aks01_public_ip_prefix" {
-  provider            = "${local.provider}"
+  provider            = "${data.azurerm_key_vault_secret.aks_subscription.value}"
   name                = "${var.env}-01-aks-pip"
   resource_group_name = "aks-infra-${var.env}-rg"
 }
