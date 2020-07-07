@@ -5,7 +5,7 @@ module "reform-scan-notifications-alert" {
 
   enabled    = "${var.env == "prod"}"
   alert_name = "Reform_Scan_notification"
-  alert_desc = "Triggers when notification service sends at least 5 notifications within a 30 minutes window timeframe."
+  alert_desc = "Triggers when notification service receives at least 5 notifications within a 30 minutes window timeframe."
 
   app_insights_query = "traces | where message startswith 'Started processing notification message'"
 
