@@ -1,5 +1,4 @@
-// single alert to minify unnecessary cost because threshold used in here is minimal
-module "reform-scan-notification-alert" {
+module "reform-scan-notifications-alert" {
   source            = "git@github.com:hmcts/cnp-module-metric-alert"
   location          = "${azurerm_application_insights.appinsights.location}"
   app_insights_name = "${azurerm_application_insights.appinsights.name}"
@@ -8,7 +7,7 @@ module "reform-scan-notification-alert" {
   alert_name = "Reform_Scan_notification"
   alert_desc = "Triggers when notification service sends at least 5 notifications within a 30 minutes window timeframe."
 
-  app_insights_query = "traces | where message startswith 'Sending error notification'"
+  app_insights_query = "traces | where message startswith 'Started processing notification message'"
 
   frequency_in_minutes       = 15
   time_window_in_minutes     = 30
