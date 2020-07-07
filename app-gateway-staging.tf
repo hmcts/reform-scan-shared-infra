@@ -1,6 +1,6 @@
 
 module "appGwStaging" {
-  source            = "git@github.com:hmcts/cnp-module-waf?ref=master"
+  source            = "git@github.com:hmcts/cnp-module-waf?ref=CHG5001024"
   env               = "${var.env}"
   subscription      = "${var.subscription}"
   location          = "${var.location}"
