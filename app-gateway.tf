@@ -85,7 +85,7 @@ module "appGw" {
       name                                = "http-probe"
       protocol                            = "Http"
       path                                = "/"
-      interval                            = 30
+      interval                            = 60
       timeout                             = 60
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
