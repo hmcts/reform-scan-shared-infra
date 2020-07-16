@@ -86,7 +86,7 @@ module "appGw" {
       protocol                            = "Http"
       path                                = "/"
       interval                            = 30
-      timeout                             = 30
+      timeout                             = 60
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
       backendHttpSettings                 = "backend"
