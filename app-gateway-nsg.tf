@@ -75,7 +75,7 @@ resource "azurerm_network_security_group" "reformscannsg" {
     direction                  = "Inbound"
     access                     = "Allow"
     priority                   = 130
-    source_address_prefix    = "Storage"
+    source_address_prefix      = "Storage"
     source_port_range          = "*"
     destination_address_prefix = "*"
     destination_port_range     = "443"
