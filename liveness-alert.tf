@@ -9,7 +9,7 @@ module "blob-router-service-liveness-alert" {
 
   app_insights_query = <<EOF
 requests
-| where name == "GET /health" and resultCode != "200"
+| where url contains "/health" and success != "True"
 | where cloud_RoleName == "Blob Router Service"
 EOF
 
@@ -34,7 +34,7 @@ module "reform-scan-notification-service-liveness-alert" {
 
   app_insights_query = <<EOF
 requests
-| where name == "GET /health" and resultCode != "200"
+| where url contains "/health" and success != "True"
 | where cloud_RoleName == "Reform Scan Notification Service"
 EOF
 
