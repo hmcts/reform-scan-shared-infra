@@ -1,25 +1,25 @@
 
 module "appGwStaging" {
   source            = "git@github.com:hmcts/cnp-module-waf?ref=add-exclusion-rule"
-  env               = "${var.env}"
-  subscription      = "${var.subscription}"
-  location          = "${var.location}"
+  env               = var.env
+  subscription      = var.subscription
+  location          = var.location
   wafName           = "${var.product}stg"
-  resourcegroupname = "${azurerm_resource_group.rg.name}"
-  common_tags       = "${var.common_tags}"
+  resourcegroupname = azurerm_resource_group.rg.name
+  common_tags       = var.common_tags
 
   # vNet connections
   gatewayIpConfigurations = [
     {
       name     = "internalNetwork"
-      subnetId = "${data.azurerm_subnet.subnet_a.id}"
+      subnetId = data.azurerm_subnet.subnet_a.id
     },
   ]
 
   sslCertificates = [
     {
-      name     = "${var.external_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      name     = var.external_cert_name
+      data     = data.azurerm_key_vault_secret.cert.value
       password = ""
     },
   ]
@@ -31,8 +31,8 @@ module "appGwStaging" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
-      hostName                = "${local.external_hostname_stg}"
+      SslCertificate          = var.external_cert_name
+      hostName                = local.external_hostname_stg
     },
   ]
 
@@ -41,7 +41,7 @@ module "appGwStaging" {
     {
       name = "${var.product}-${var.env}-staging"
 
-      backendAddresses = "${module.palo_alto_staging.untrusted_ips_ip_address}"
+      backendAddresses = module.palo_alto_staging.untrusted_ips_ip_address
     },
   ]
 
@@ -55,7 +55,7 @@ module "appGwStaging" {
       probeEnabled                   = "True"
       probe                          = "http-probe"
       PickHostNameFromBackendAddress = "False"
-      HostName                       = "${local.external_hostname_stg}"
+      HostName                       = local.external_hostname_stg
     },
   ]
 
@@ -80,7 +80,7 @@ module "appGwStaging" {
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
       backendHttpSettings                 = "backend"
-      host                                = "${local.external_hostname_stg}"
+      host                                = local.external_hostname_stg
       healthyStatusCodes                  = "200-404" // MS returns 400 on /, allowing more codes in case they change it
     },
   ]

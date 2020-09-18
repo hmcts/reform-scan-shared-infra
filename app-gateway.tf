@@ -1,35 +1,35 @@
 data "azurerm_key_vault" "infra_vault" {
   name                = "infra-vault-${var.subscription}"
-  resource_group_name = "${var.env == "prod" ? "core-infra-prod" : "cnp-core-infra"}"
+  resource_group_name = var.env == "prod" ? "core-infra-prod" : "cnp-core-infra"
 }
 
 data "azurerm_key_vault_secret" "cert" {
-  key_vault_id = "${data.azurerm_key_vault.infra_vault.id}"
-  name         = "${var.external_cert_name}"
+  key_vault_id = data.azurerm_key_vault.infra_vault.id
+  name         = var.external_cert_name
 }
 
 module "appGw" {
-  source            = "git@github.com:hmcts/cnp-module-waf?ref=add-exclusion-rule"
-  env               = "${var.env}"
-  subscription      = "${var.subscription}"
-  location          = "${var.location}"
-  wafName           = "${var.product}"
-  resourcegroupname = "${azurerm_resource_group.rg.name}"
-  common_tags       = "${var.common_tags}"
-  wafFileUploadLimit = "${var.wafFileUploadLimit}"
+  source             = "git@github.com:hmcts/cnp-module-waf?ref=add-exclusion-rule"
+  env                = var.env
+  subscription       = var.subscription
+  location           = var.location
+  wafName            = var.product
+  resourcegroupname  = azurerm_resource_group.rg.name
+  common_tags        = var.common_tags
+  wafFileUploadLimit = var.wafFileUploadLimit
 
   # vNet connections
   gatewayIpConfigurations = [
     {
       name     = "internalNetwork"
-      subnetId = "${data.azurerm_subnet.subnet_a.id}"
+      subnetId = data.azurerm_subnet.subnet_a.id
     },
   ]
 
   sslCertificates = [
     {
-      name     = "${var.external_cert_name}"
-      data     = "${data.azurerm_key_vault_secret.cert.value}"
+      name     = var.external_cert_name
+      data     = data.azurerm_key_vault_secret.cert.value
       password = ""
     },
   ]
@@ -41,8 +41,8 @@ module "appGw" {
       FrontendIPConfiguration = "appGatewayFrontendIP"
       FrontendPort            = "frontendPort443"
       Protocol                = "Https"
-      SslCertificate          = "${var.external_cert_name}"
-      hostName                = "${local.external_hostname}"
+      SslCertificate          = var.external_cert_name
+      hostName                = local.external_hostname
     },
   ]
 
@@ -51,7 +51,7 @@ module "appGw" {
     {
       name = "${var.product}-${var.env}"
 
-      backendAddresses = "${module.palo_alto.untrusted_ips_ip_address}"
+      backendAddresses = module.palo_alto.untrusted_ips_ip_address
     },
   ]
 
@@ -65,7 +65,7 @@ module "appGw" {
       probeEnabled                   = "True"
       probe                          = "http-probe"
       PickHostNameFromBackendAddress = "False"
-      HostName                       = "${local.external_hostname}"
+      HostName                       = local.external_hostname
     },
   ]
 
@@ -90,7 +90,7 @@ module "appGw" {
       unhealthyThreshold                  = 5
       pickHostNameFromBackendHttpSettings = "false"
       backendHttpSettings                 = "backend"
-      host                                = "${local.external_hostname}"
+      host                                = local.external_hostname
       healthyStatusCodes                  = "200-404" // MS returns 400 on /, allowing more codes in case they change it
     },
   ]
