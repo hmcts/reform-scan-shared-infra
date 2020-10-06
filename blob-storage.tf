@@ -18,12 +18,6 @@ locals {
   client_containers = ["bulkscanauto", "bulkscan", "cmc", "crime", "divorce", "finrem", "pcq", "probate", "sscs", "publiclaw"]
 }
 
-data "azurerm_subnet" "trusted_subnet" {
-  name                 = "${local.trusted_vnet_subnet_name}"
-  virtual_network_name = "${local.trusted_vnet_name}"
-  resource_group_name  = "${local.trusted_vnet_resource_group}"
-}
-
 data "azurerm_subnet" "jenkins_subnet" {
   provider             = "azurerm.mgmt"
   name                 = "iaas"
@@ -60,7 +54,7 @@ resource "azurerm_storage_account" "storage_account" {
   }
 
   network_rules {
-    virtual_network_subnet_ids = ["${data.azurerm_subnet.trusted_subnet.id}", "${data.azurerm_subnet.jenkins_subnet.id}", "${data.azurerm_subnet.aks_00_subnet.id}", "${data.azurerm_subnet.aks_01_subnet.id}"]
+    virtual_network_subnet_ids = ["${data.azurerm_subnet.scan_storage_subnet.id}", "${data.azurerm_subnet.jenkins_subnet.id}", "${data.azurerm_subnet.aks_00_subnet.id}", "${data.azurerm_subnet.aks_01_subnet.id}"]
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
   }
