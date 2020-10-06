@@ -10,5 +10,5 @@ resource "azurerm_application_insights" "appinsights" {
 resource "azurerm_key_vault_secret" "appinsights_secret" {
   name         = "app-insights-instrumentation-key"
   value        = "${azurerm_application_insights.appinsights.instrumentation_key}"
-  key_vault_id = "${data.azurerm_key_vault.key_vault.id}"
+  key_vault_id = "${module.vault.key_vault_id}"
 }
