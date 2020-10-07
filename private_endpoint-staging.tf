@@ -1,4 +1,4 @@
-resource "azurerm_template_deployment" "private_endpoint-staging" {
+resource "azurerm_template_deployment" "private_endpoint_staging" {
   name                = "${local.account_name}-endpoint"
   resource_group_name = "${azurerm_resource_group.rg.name}"
 
