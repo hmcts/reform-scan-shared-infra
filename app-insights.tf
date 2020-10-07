@@ -11,4 +11,12 @@ resource "azurerm_key_vault_secret" "appinsights_secret" {
   name         = "app-insights-instrumentation-key"
   value        = "${azurerm_application_insights.appinsights.instrumentation_key}"
   key_vault_id = "${module.vault.key_vault_id}"
+  
+  lifecycle {
+    ignore_changes = [
+      # Ignore changes to appinsights as otherwise upgrading to the Azure provider 2.x
+      # destroys and re-creates this appinsights instance
+      application_type,
+    ]
+  }
 }
