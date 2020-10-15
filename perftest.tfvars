@@ -4,4 +4,4 @@ managed_identity_object_id = "f4d2da78-0e2e-4dbc-93ca-ee41e77cec95"
 
 frontdoor_backend = "firewall-nonprodi-palo-reformscanperftest.uksouth.cloudapp.azure.com"
 
-external_hostname = "reformscan.perftest.platform.hmcts.net"
+frontdoor_hostname = "reformscan.perftest.platform.hmcts.net"
