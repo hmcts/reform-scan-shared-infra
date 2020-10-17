@@ -27,7 +27,7 @@ resource "azurerm_frontdoor" "frontdoor" {
   backend_pool {
     name = "storageBackend"
     backend {
-      host_header = "${var.frontdoor_hostname}"
+      host_header = "${azurerm_storage_account.storage_account.primary_blob_host}"
       address     = "${var.frontdoor_backend}"
       http_port   = 80
       https_port  = 443
