@@ -1,6 +1,6 @@
 module "vault" {
   source                  = "git@github.com:hmcts/cnp-module-key-vault?ref=azurermv2"
-  name                    = "${var.product}-ptest"
+  name                    = "${var.product}-${var.env}"
   product                 = "${var.product}"
   env                     = "${var.env}"
   tenant_id               = "${var.tenant_id}"
