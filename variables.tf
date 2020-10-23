@@ -44,15 +44,4 @@ variable "wafFileUploadLimit" {
   default = "100"
 }
 
-variable "palo_cluster_size" {
-  type        = "string"
-  default     = "1"
-}
 
-variable "frontdoor_backend" {
-  type        = "string"
-}
-
-variable "frontdoor_hostname" {
-   type        = "string"
-}
