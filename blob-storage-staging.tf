@@ -35,13 +35,13 @@ resource "azurerm_storage_account" "storage_account_staging" {
 
 resource "azurerm_storage_container" "client_containers_stg" {
   name                 = "${local.client_containers_stg[count.index]}"
-  storage_account_name = "${azurerm_storage_account.storage_account_staging.*.name}"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging[0].name}"
   count                = "${length(local.client_containers_stg)}"
 }
 
 resource "azurerm_storage_container" "client_rejected_containers_stg" {
   name                 = "${local.client_containers_stg[count.index]}-rejected"
-  storage_account_name = "${azurerm_storage_account.storage_account_staging.*.name}"
+  storage_account_name = "${azurerm_storage_account.storage_account_staging[0].name}"
   count                = "${length(local.client_containers_stg)}"
 }
 
