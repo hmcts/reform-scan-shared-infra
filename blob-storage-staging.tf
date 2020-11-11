@@ -49,7 +49,7 @@ resource "azurerm_storage_container" "client_rejected_containers_stg" {
 resource "azurerm_key_vault_secret" "storage_account_staging_name" {
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-name"
-  value        = "${azurerm_storage_account.storage_account_staging.*.name}"
+  value        = "${azurerm_storage_account.storage_account_staging[0].name}"
 
   count = var.enable_staging_account
 }
@@ -57,7 +57,7 @@ resource "azurerm_key_vault_secret" "storage_account_staging_name" {
 resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-primary-key"
-  value        = "${azurerm_storage_account.storage_account_staging.*.primary_access_key}"
+  value        = "${azurerm_storage_account.storage_account_staging[0].primary_access_key}"
 
   count = var.enable_staging_account
 }
@@ -65,7 +65,7 @@ resource "azurerm_key_vault_secret" "storage_account_staging_primary_key" {
 resource "azurerm_key_vault_secret" "storage_account_staging_secondary_key" {
   key_vault_id = "${module.vault.key_vault_id}"
   name         = "storage-account-staging-secondary-key"
-  value        = "${azurerm_storage_account.storage_account_staging.*.secondary_access_key}"
+  value        = "${azurerm_storage_account.storage_account_staging[0].secondary_access_key}"
 
   count = var.enable_staging_account
 }
