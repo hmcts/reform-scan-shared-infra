@@ -6,7 +6,7 @@ variable "location" {
 
 variable "application_type" {
   type        = "string"
-  default     = "Web"
+  default     = "web"
   description = "Type of Application Insights (Web/Other)"
 }
 
@@ -35,20 +35,16 @@ variable "managed_identity_api_mgmt" {
   default = ""
 }
 
-variable "external_cert_name" {}
-
 variable "external_hostname" {
   type        = "string"
   default     = "platform.hmcts.net"
   description = "Ending of hostname. Subdomains will be resolved in declaration of locals"
 }
 
-variable "wafFileUploadLimit" {
-  description = "Maximum file upload size in MB for WAF"
-  default = "100"
+variable "enable_staging_account" {
+  default = 0
 }
 
-variable "palo_cluster_size" {
-  type        = "string"
-  default     = "1"
+variable "enable_private_endpoint" {
+  default = 0
 }
