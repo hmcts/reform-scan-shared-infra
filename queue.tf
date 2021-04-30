@@ -12,7 +12,7 @@ module "notifications-queue" {
   name                = "notifications"
   namespace_name      = "${module.queue-namespace.name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"
-  lock_duration       = "PT5M"
+  lock_duration       = "PT30M"
   requires_duplicate_detection            =  true
   duplicate_detection_history_time_window = "PT59M"
 }
