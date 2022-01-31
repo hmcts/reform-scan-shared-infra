@@ -39,6 +39,13 @@ data "azurerm_subnet" "aks_01_subnet" {
   resource_group_name  = "${local.mgmt_network_rg_name}"
 }
 
+data "azurerm_subnet" "aks_app_gw" {
+  provider             = "azurerm.mgmt"
+  name                 = "aks-appgw"
+  virtual_network_name = "${local.mgmt_network_name}"
+  resource_group_name  = "${local.mgmt_network_rg_name}"
+}
+
 resource "azurerm_storage_account" "storage_account" {
   name                = "${local.account_name}"
   resource_group_name = "${azurerm_resource_group.rg.name}"

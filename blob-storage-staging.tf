@@ -1,8 +1,6 @@
 locals {
   stripped_product_stg  = "${replace(var.product, "-", "")}"
   account_name_stg      = "${local.stripped_product_stg}${var.env}staging"
-  mgmt_network_name_stg = "cft-ptl-vnet"
-  mgmt_network_rg_name_stg = "cft-ptl-network-rg"
   prod_hostname_stg     = "${local.stripped_product_stg}stg.${var.external_hostname}"
   nonprod_hostname_stg  = "${local.stripped_product_stg}stg.${var.env}.${var.external_hostname}"
   external_hostname_stg = "${ var.env == "prod" ? local.prod_hostname_stg : local.nonprod_hostname_stg}"
@@ -22,7 +20,7 @@ resource "azurerm_storage_account" "storage_account_staging" {
 
   network_rules {
     virtual_network_subnet_ids = [
-      data.azurerm_subnet.scan_storage_subnet.id, data.azurerm_subnet.jenkins_subnet.id, data.azurerm_subnet.aks_00_subnet.id, data.azurerm_subnet.aks_01_subnet.id]
+      data.azurerm_subnet.scan_storage_subnet.id, data.azurerm_subnet.jenkins_subnet.id, data.azurerm_subnet.aks_00_subnet.id, data.azurerm_subnet.aks_01_subnet.id, data.azurerm_subnet.aks_app_gw.id]
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
   }
