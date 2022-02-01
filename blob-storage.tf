@@ -6,7 +6,7 @@ provider "azurerm" {
 
 locals {
   stripped_product  = "${replace(var.product, "-", "")}"
-  account_name      = "${local.stripped_product}${var.env}"
+   account_name      = "${local.stripped_product}${var.env}"
   mgmt_network_name = "cft-ptl-vnet"
   mgmt_network_rg_name = "cft-ptl-network-rg"
   prod_hostname     = "${local.stripped_product}.${var.external_hostname}"
@@ -35,13 +35,6 @@ data "azurerm_subnet" "aks_00_subnet" {
 data "azurerm_subnet" "aks_01_subnet" {
   provider             = "azurerm.mgmt"
   name                 = "aks-01"
-  virtual_network_name = "${local.mgmt_network_name}"
-  resource_group_name  = "${local.mgmt_network_rg_name}"
-}
-
-data "azurerm_subnet" "aks_app_gw" {
-  provider             = "azurerm.mgmt"
-  name                 = "aks-appgw"
   virtual_network_name = "${local.mgmt_network_name}"
   resource_group_name  = "${local.mgmt_network_rg_name}"
 }
