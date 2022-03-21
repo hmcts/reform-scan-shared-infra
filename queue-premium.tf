@@ -3,6 +3,9 @@ module "queue-namespace-premium" {
   name                = "${local.product}-servicebus-${var.env}-premium"
   location            = var.location
   resource_group_name = azurerm_resource_group.rg.name
+  sku                 = "Premium"
+  capacity            = 1
+  zoneRedundant       = true
   env                 = var.env
   common_tags         = local.tags
 }
