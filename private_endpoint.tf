@@ -5,6 +5,7 @@ locals {
 }
 
 data "azurerm_private_dns_zone" "private_link_dns_zone" {
+  provider            = azurerm.mgmt
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = "core-infra-intsvc-rg"
 }
