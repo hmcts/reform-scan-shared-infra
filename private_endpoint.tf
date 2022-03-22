@@ -4,6 +4,11 @@ locals {
   scan_storage_vnet_subnet_name    = "scan-storage"
 }
 
+data "azurerm_private_dns_zone" "private_link_dns_zone" {
+  name                = "privatelink.blob.core.windows.net"
+  resource_group_name = "core-infra-intsvc-rg"
+}
+
 data "azurerm_subnet" "scan_storage_subnet" {
   name                 = local.scan_storage_vnet_subnet_name
   virtual_network_name = local.scan_storage_vnet_name
@@ -21,5 +26,10 @@ resource "azurerm_private_endpoint" "private_endpoint" {
     private_connection_resource_id = azurerm_storage_account.storage_account.id
     is_manual_connection           = false
     subresource_names              = ["blob"]
+  }
+
+  private_dns_zone_group {
+    name                         = data.azurerm_private_dns_zone.private_link_dnz_zone.name
+    private_private_dns_zone_ids = data.azurerm_private_dns_zone.private_link_dnz_zone.id
   }
 }
