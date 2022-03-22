@@ -31,6 +31,6 @@ resource "azurerm_private_endpoint" "private_endpoint" {
 
   private_dns_zone_group {
     name                 = data.azurerm_private_dns_zone.private_link_dns_zone.name
-    private_dns_zone_ids = data.azurerm_private_dns_zone.private_link_dns_zone.id
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.private_link_dns_zone.id]
   }
 }
