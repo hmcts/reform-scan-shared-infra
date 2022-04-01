@@ -44,3 +44,5 @@ variable "external_hostname" {
 variable "enable_staging_account" {
   default = 0
 }
+
+variable "aks_subscription_id" {}
