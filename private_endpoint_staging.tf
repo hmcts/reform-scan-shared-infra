@@ -1,4 +1,4 @@
-data "azurerm_private_dns_zone" "private_link_dns_zone" {
+data "azurerm_private_dns_zone" "private_link_dns_zone_stg" {
   provider            = azurerm.mgmt
   name                = "privatelink.blob.core.windows.net"
   resource_group_name = "core-infra-intsvc-rg"
@@ -18,7 +18,7 @@ resource "azurerm_private_endpoint" "private_endpoint_stg" {
   }
 
   private_dns_zone_group {
-    name                 = data.azurerm_private_dns_zone.private_link_dns_zone.name
+    name                 = data.azurerm_private_dns_zone.private_link_dns_zone_stg.name
     private_dns_zone_ids = [data.azurerm_private_dns_zone.private_link_dns_zone.id]
   }
 
