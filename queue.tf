@@ -12,7 +12,7 @@ module "queue-namespace" {
 }
 
 module "notifications-queue" {
-  source                                  = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=master"
+  source                                  = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=DTSPO-6371_azurerm_upgrade"
   name                                    = "notifications"
   namespace_name                          = module.queue-namespace.name
   resource_group_name                     = azurerm_resource_group.rg.name
@@ -46,7 +46,7 @@ resource "azurerm_key_vault_secret" "notification_queue_listen_access_key" {
 }
 
 module "notifications-staging-queue" {
-  source                                  = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=master"
+  source                                  = "git@github.com:hmcts/terraform-module-servicebus-queue?ref=DTSPO-6371_azurerm_upgrade"
   name                                    = "notifications-staging"
   namespace_name                          = module.queue-namespace.name
   resource_group_name                     = azurerm_resource_group.rg.name
