@@ -18,7 +18,7 @@ resource "azurerm_storage_account" "storage_account_staging" {
 
   location                 = "${azurerm_resource_group.rg.location}"
   account_tier             = "Standard"
-  account_replication_type = "ZRS"
+  account_replication_type = var.staging_storage_account_repl_type
 
   network_rules {
     virtual_network_subnet_ids = [
