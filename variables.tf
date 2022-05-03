@@ -46,3 +46,11 @@ variable "enable_staging_account" {
 }
 
 variable "aks_subscription_id" {}
+
+variable "storage_account_repl_type" {
+  default = "LRS"
+}
+
+variable "staging_storage_account_repl_type" {
+  default = "LRS"
+}
