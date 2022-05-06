@@ -1,9 +1,3 @@
-provider "azurerm" {
-  alias           = "mgmt"
-  subscription_id = var.mgmt_subscription_id
-  features {}
-}
-
 locals {
   stripped_product     = replace(var.product, "-", "")
   account_name         = "${local.stripped_product}${var.env}"
@@ -16,27 +10,17 @@ locals {
   // for each client service two containers are created: one named after the service
   // and another one, named {service_name}-rejected, for storing envelopes rejected by process
   client_containers = ["bulkscanauto", "bulkscan", "cmc", "crime", "divorce", "nfd", "finrem", "pcq", "probate", "sscs", "publiclaw", "privatelaw"]
-}
 
-data "azurerm_subnet" "jenkins_subnet" {
-  provider             = azurerm.mgmt
-  name                 = "iaas"
-  virtual_network_name = local.mgmt_network_name
-  resource_group_name  = local.mgmt_network_rg_name
-}
+  common_subnets  = [
+    data.azurerm_subnet.scan_storage_subnet.id,
+    data.azurerm_subnet.jenkins_subnet.id, 
+    data.azurerm_subnet.aks_00_subnet.id, 
+    data.azurerm_subnet.aks_01_subnet.id,
+  ]
+  
+  arm_aks_subnets = var.env == "prod" ? [data.azurerm_subnet.arm_aks_00_subnet[0].id, data.azurerm_subnet.arm_aks_01_subnet[0].id] : []
 
-data "azurerm_subnet" "aks_00_subnet" {
-  provider             = azurerm.mgmt
-  name                 = "aks-00"
-  virtual_network_name = local.mgmt_network_name
-  resource_group_name  = local.mgmt_network_rg_name
-}
-
-data "azurerm_subnet" "aks_01_subnet" {
-  provider             = azurerm.mgmt
-  name                 = "aks-01"
-  virtual_network_name = local.mgmt_network_name
-  resource_group_name  = local.mgmt_network_rg_name
+  vnets_to_allow_access = concat(common_subnets, arm_aks_subnets)
 }
 
 resource "azurerm_storage_account" "storage_account" {
@@ -53,7 +37,7 @@ resource "azurerm_storage_account" "storage_account" {
   #   }
 
   network_rules {
-    virtual_network_subnet_ids = ["${data.azurerm_subnet.scan_storage_subnet.id}", "${data.azurerm_subnet.jenkins_subnet.id}", "${data.azurerm_subnet.aks_00_subnet.id}", "${data.azurerm_subnet.aks_01_subnet.id}"]
+    virtual_network_subnet_ids = local.vnets_to_allow_access
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
   }
