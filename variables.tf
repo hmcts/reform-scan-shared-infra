@@ -17,7 +17,7 @@ variable "subscription" {}
 variable "mgmt_subscription_id" {}
 
 variable "common_tags" {
-  type = map
+  type = map(any)
 }
 
 variable "tenant_id" {}

@@ -1,11 +1,11 @@
 locals {
   product = "reform-scan"
-  tags = "${merge(
+  tags = (merge(
     var.common_tags,
     tomap({
       "Team Contact" = "#rbs"
-      "Team Name" = "Bulk Scan"
-  }))}"
+      "Team Name"    = "Bulk Scan"
+  })))
 }
 
 resource "azurerm_resource_group" "rg" {
