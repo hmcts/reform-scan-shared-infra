@@ -20,7 +20,7 @@ locals {
   app_aks_network_name    = "cft-${local.aks_env}-vnet"
   app_aks_network_rg_name = "cft-${local.aks_env}-network-rg"
 
-  arm_aks_subnets = var.env == "prod" ? [data.azurerm_subnet.arm_aks_00_subnet[0].id, data.azurerm_subnet.arm_aks_01_subnet[0].id, data.azurerm_subnet.app_aks_00_subnet[0].id, data.azurerm_subnet.app_aks_01_subnet[0].id]
+  arm_aks_subnets = var.env == "prod" ? [data.azurerm_subnet.arm_aks_00_subnet[0].id, data.azurerm_subnet.arm_aks_01_subnet[0].id, data.azurerm_subnet.app_aks_00_subnet[0].id, data.azurerm_subnet.app_aks_01_subnet[0].id] : []
 
   vnets_to_allow_access = concat(local.common_subnets, local.arm_aks_subnets)
 }
