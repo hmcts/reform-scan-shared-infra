@@ -19,7 +19,7 @@ resource "azurerm_private_endpoint" "private_endpoint_stg" {
 
   private_dns_zone_group {
     name                 = data.azurerm_private_dns_zone.private_link_dns_zone_stg.name
-    private_dns_zone_ids = [data.azurerm_private_dns_zone.private_link_dns_zone_stg.id]
+    private_dns_zone_ids = [data.azurerm_private_dns_zone.private_link_dns_zone.id]
   }
 
   count = var.enable_staging_account
