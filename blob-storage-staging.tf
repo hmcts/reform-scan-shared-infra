@@ -21,14 +21,10 @@ resource "azurerm_storage_account" "storage_account_staging" {
   allow_nested_items_to_be_public = false
 
   network_rules {
+    virtual_network_subnet_ids = [
+    data.azurerm_subnet.scan_storage_subnet.id, data.azurerm_subnet.jenkins_subnet.id, data.azurerm_subnet.aks_00_subnet.id, data.azurerm_subnet.aks_01_subnet.id]
     bypass         = ["Logging", "Metrics", "AzureServices"]
     default_action = "Deny"
-    virtual_network_subnet_ids = var.env == "ithc" ? [] : [
-      data.azurerm_subnet.scan_storage_subnet.id,
-      data.azurerm_subnet.jenkins_subnet.id,
-      data.azurerm_subnet.aks_00_subnet.id,
-      data.azurerm_subnet.aks_01_subnet.id
-    ]
   }
 
   tags = local.tags
