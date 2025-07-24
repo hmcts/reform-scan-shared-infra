@@ -17,6 +17,7 @@ data "azurerm_subnet" "scan_storage_subnet" {
 }
 
 resource "azurerm_private_endpoint" "private_endpoint" {
+  depends_on          = [azurerm_storage_account.storage_account]
   name                = "${local.account_name}-endpoint"
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
