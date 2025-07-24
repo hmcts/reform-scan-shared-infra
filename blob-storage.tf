@@ -41,9 +41,9 @@ resource "azurerm_storage_account" "storage_account" {
   #   }
 
   network_rules {
+    virtual_network_subnet_ids = local.vnets_to_allow_access
     bypass                     = ["Logging", "Metrics", "AzureServices"]
     default_action             = "Deny"
-    virtual_network_subnet_ids = local.vnets_to_allow_access
   }
 
   tags = local.tags
