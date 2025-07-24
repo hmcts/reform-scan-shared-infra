@@ -1,4 +1,3 @@
-managed_identity_api_mgmt     = "8f175f8a-28c1-4940-b8e4-303ac51c9ad0"
-managed_identity_cft_api_mgmt = "16fcf789-4b69-4a06-af63-0537bfc53ca1"
+managed_identity_cft_api_mgmt = "97bdee34-4fc5-49fa-ba31-aee5138cb1ce"
 
 storage_account_repl_type = "ZRS"
