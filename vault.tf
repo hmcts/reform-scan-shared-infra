@@ -12,7 +12,6 @@ module "vault" {
   managed_identity_object_ids = [var.managed_identity_cft_api_mgmt]
   create_managed_identity     = true
   grant_preview_jenkins_access = var.env == "aat" // cft apps only
-  grant_dev_jenkins_access = var.env == "stg" // sds apps only
 }
 
 output "vaultName" {
